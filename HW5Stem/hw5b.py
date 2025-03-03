@@ -16,27 +16,27 @@ def ffPoint(Re, rr):
     :param rr:  the relative roughness
     :return:  the friction factor
     """
-    if Re>=4000:
-        return pta.ff(Re, rr,CBEQN=True)
-    if Re<=2000:
-        return pta.ff(Re, rr)
-    CBff= #JES MISSING CODE  #prediction of Colebrook Equation in Transition region
-    Lamff= #JES MISSING CODE  #prediction of Laminar Equation in Transistion region
-    mean=(CBff+Lamff)/2
-    sig=0.2*mean
-    return #JES MISSING CODE  #use normalvariate to select a number randomly from a normal distribution
+    if Re >= 4000:
+        return pta.ff(Re, rr, CBEQN=True)  # Colebrook Equation for turbulent flow
+    if Re <= 2000:
+        return pta.ff(Re, rr)  # Laminar flow (f = 64/Re)
+    CBff = pta.ff(Re, rr, CBEQN=True)  # Prediction of Colebrook Equation in Transition region
+    Lamff = pta.ff(Re, rr)  # Prediction of Laminar Equation in Transition region
+    mean = (CBff + Lamff) / 2
+    sig = 0.2 * mean
+    return rnd.normalvariate(mean, sig)  # Use normalvariate to select a number randomly from a normal distribution
 
-def PlotPoint(Re,f):
-    pta.plotMoody(plotPoint=True, pt=(Re,f))
+def PlotPoint(Re, f):
+    pta.plotMoody(plotPoint=True, pt=(Re, f))
 
 def main():
-    Re=float(input("Enter the Reynolds number:  "))
-    rr=float(input("Enter the relative roughness:  "))
-    f=ffPoint(Re, rr)
+    Re = float(input("Enter the Reynolds number:  "))
+    rr = float(input("Enter the relative roughness:  "))
+    f = ffPoint(Re, rr)
     PlotPoint(Re, f)
 # endregion
 
 # region function calls
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
 # endregion
